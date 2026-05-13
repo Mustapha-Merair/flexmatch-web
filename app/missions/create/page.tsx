@@ -29,7 +29,7 @@ export default function CreateMission() {
       const res = await fetch('http://localhost:3000/missions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, clientId: user.id })
+        body: JSON.stringify({ ...form, clientId: user?.id })
       });
       const data = await res.json();
       if (data.id) {
