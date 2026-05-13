@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 export default function CreateMission() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{id: string} | null>(null);
   const [form, setForm] = useState({
     title: '',
     description: '',
