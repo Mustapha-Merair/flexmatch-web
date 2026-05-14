@@ -26,7 +26,7 @@ export default function CreateMission() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:3000/missions', {
+      const res = await fetch('https://flexmatch-api-production.up.railway.app/missions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, clientId: user?.id })

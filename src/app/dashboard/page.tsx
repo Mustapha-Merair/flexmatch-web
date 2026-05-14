@@ -15,7 +15,7 @@ export default function Dashboard() {
     const t = localStorage.getItem('token');
     if (!u || !t) { router.push('/login'); return; }
     setUser(JSON.parse(u));
-    fetch('http://localhost:3000/missions')
+    fetch('https://flexmatch-api-production.up.railway.app/missions')
       .then(r => r.json())
       .then(setMissions)
       .catch(console.error);
