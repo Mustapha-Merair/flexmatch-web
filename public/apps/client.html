@@ -352,8 +352,13 @@ function toast(msg) {
 }
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.add('hidden');
+    s.style.display = 'none';
+  });
+  const el = document.getElementById(id);
+  el.classList.remove('hidden');
+  el.style.display = 'block';
 }
 
 function navTab(tab) {
