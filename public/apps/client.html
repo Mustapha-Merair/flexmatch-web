@@ -600,6 +600,7 @@ async function postMission() {
 
 // INIT
 window.onload = () => {
+  setTimeout(() => {
   const token = localStorage.getItem('fm_token');
   const user = localStorage.getItem('fm_user');
   if (token && user) {
