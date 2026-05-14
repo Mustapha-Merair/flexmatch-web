@@ -60,14 +60,6 @@ textarea.input{resize:none;min-height:80px}
 
 <div class="toast" id="toast"></div>
 
-<!-- SPLASH -->
-<div id="splash" class="screen" style="background:linear-gradient(135deg,#00C2C3,#0099a8);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh">
-  <div style="font-size:48px;font-weight:900;color:#fff;margin-bottom:8px"><span>Flex</span><span style="opacity:.8">Match</span></div>
-  <div style="color:rgba(255,255,255,.8);font-size:14px;margin-bottom:40px">Trust OS · France</div>
-  <div style="width:40px;height:40px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite"></div>
-  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-</div>
-
 <!-- LOGIN -->
 <div id="login" class="screen hidden" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px">
   <div style="width:100%;max-width:400px">
@@ -600,7 +592,6 @@ async function postMission() {
 
 // INIT
 window.onload = () => {
-  setTimeout(() => {
   const token = localStorage.getItem('fm_token');
   const user = localStorage.getItem('fm_user');
   if (token && user) {
