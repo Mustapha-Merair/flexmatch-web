@@ -3,608 +3,910 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FlexMatch Client</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+:root{--T:#00C2C3;--T2:#009fa0;--TL:#e0fafa;--TM:#b2f0f0;--N:#001f3f;--N2:#0d2d50;--sf:#fff;--tx:#0d1821;--mu:#6b8099;--bd:rgba(0,194,195,.15);--R:18px;--r:12px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh}
-.hidden{display:none}
-.screen{min-height:100vh}
-.btn{padding:12px 20px;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
-.btn-primary{background:linear-gradient(135deg,#00C2C3,#0099a8);color:#fff;box-shadow:0 4px 15px rgba(0,194,195,.3)}
-.btn-secondary{background:#f0f4f8;color:#00C2C3;border:2px solid #00C2C3}
-.btn-danger{background:#fee2e2;color:#dc2626;border:2px solid #fca5a5}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.input{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;transition:border .2s}
-.input:focus{border-color:#00C2C3}
-.label{font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.5px}
-.header{background:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.06);position:sticky;top:0;z-index:10}
-.logo{font-size:20px;font-weight:900}
-.logo span:first-child{color:#00C2C3}
-.nav{display:flex;background:#fff;border-top:1px solid #e2e8f0;padding:8px 0 20px;position:fixed;bottom:0;left:0;right:0;z-index:10}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:transparent;color:#94a3b8;font-size:10px;font-weight:600;cursor:pointer;padding:6px}
-.nav-btn.active{color:#00C2C3}
-.nav-icon{font-size:22px}
-.content{padding:16px;padding-bottom:80px}
-.hero{background:linear-gradient(135deg,#00C2C3,#0099a8);border-radius:20px;padding:20px;color:#fff;margin-bottom:16px}
-.sector-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.sector-card{background:#fff;border-radius:14px;padding:14px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.sector-card:hover{border-color:#00C2C3;transform:translateY(-2px)}
-.sector-icon{font-size:28px;margin-bottom:6px}
-.sector-name{font-size:12px;font-weight:700;color:#1e293b}
-.mission-card{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
-.mission-header{padding:14px 16px;color:#fff}
-.mission-body{padding:14px 16px}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700}
-.badge-open{background:#dcfce7;color:#16a34a}
-.badge-pending{background:#fef3c7;color:#d97706}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#00C2C3;color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99;white-space:nowrap}
+body{font-family:'DM Sans',sans-serif;background:#d4dde6;display:flex;justify-content:center;padding:24px 10px 40px;min-height:100vh}
+.phone{width:393px;min-height:852px;background:var(--sf);border-radius:54px;box-shadow:0 60px 120px rgba(0,31,63,.25),0 0 0 1.5px rgba(0,194,195,.15);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.sc{display:none;flex:1;flex-direction:column;overflow:hidden}.sc.on{display:flex}
+.scr{flex:1;overflow-y:auto;padding:0 20px 24px}.scr::-webkit-scrollbar{width:0}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 8px;background:var(--sf);flex-shrink:0;position:relative}
+.stime{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--tx);z-index:1}
+.notch-pill{position:absolute;top:0;left:50%;transform:translateX(-50%);width:126px;height:37px;background:#0d1821;border-radius:0 0 26px 26px;z-index:0}
+.sicons{display:flex;align-items:center;gap:6px;z-index:1}
+.sig{display:flex;align-items:flex-end;gap:1.5px}
+.sig span{background:var(--tx);border-radius:1px}
+.batt{width:25px;height:12px;border:1.5px solid rgba(13,24,33,.4);border-radius:3.5px;padding:2px;position:relative}
+.batt::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:3px;height:6px;background:rgba(13,24,33,.4);border-radius:0 2px 2px 0}
+.batt-f{height:100%;border-radius:2px;background:var(--tx);width:78%}
+.tb{padding:6px 20px 12px;background:var(--sf);flex-shrink:0}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
+.logo .lt{color:var(--T)}.logo .ln{color:var(--N)}
+.bnav{display:flex;background:var(--sf);border-top:1px solid rgba(0,0,0,.06);flex-shrink:0;padding:8px 0 20px}
+.nb{flex:1;padding:6px 3px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:transparent;color:var(--mu);font-size:9px;font-weight:500;font-family:'DM Sans',sans-serif;transition:color .15s}
+.nb.on{color:var(--T)}.ni{font-size:22px;line-height:1}
+.btn{width:100%;padding:15px;border:none;border-radius:var(--R);font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-top:8px}
+.btn:active{transform:scale(.97)}
+.btnT{background:var(--T);color:#fff;box-shadow:0 8px 24px rgba(0,194,195,.35)}
+.btnO{background:transparent;border:1.5px solid #e0e8f0;color:var(--tx)}
+.btnR{background:#fff1f0;border:1.5px solid #ffcdd2;color:#c62828}
+.btnN{background:var(--N);color:#fff}
+.sm{padding:10px 18px;font-size:13px;border-radius:30px;width:auto;margin:0;font-weight:600}
+.fg{margin-bottom:14px}
+.fl{font-size:12px;font-weight:600;color:var(--mu);margin-bottom:6px;display:block}
+.fi{width:100%;padding:14px 16px;border:1.5px solid #e8eef4;border-radius:var(--r);font-size:15px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fafcfe;outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(--T);background:var(--sf)}
+select.fi{cursor:pointer}
+textarea.fi{resize:none;height:80px}
+.card{background:var(--sf);border:1px solid #e8eef4;border-radius:20px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.card:hover{border-color:var(--TM);box-shadow:0 4px 20px rgba(0,194,195,.1)}
+.card:active{transform:scale(.98)}
+.cs{cursor:default!important}.cs:hover{box-shadow:0 2px 12px rgba(0,0,0,.04)!important;border-color:#e8eef4!important}
+.pill{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+.pA{background:#fff3e0;color:#e65100}.pG{background:#e8f5e9;color:#2e7d32}.pT{background:var(--TL);color:var(--T2)}.pP{background:#f3e5f5;color:#6a1b9a}
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(13,24,33,.92);backdrop-filter:blur(10px);color:#fff;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99}
 .toast.show{opacity:1}
-.form-section{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
-.type-btn{flex:1;padding:10px;border:2px solid #e2e8f0;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:#64748b}
-.type-btn.active{border-color:#00C2C3;background:#e0fafa;color:#00C2C3}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.kpi{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.kpi-value{font-size:22px;font-weight:900;color:#00C2C3}
-.kpi-label{font-size:10px;color:#94a3b8;font-weight:600;margin-top:4px}
-.pro-card{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;border:2px solid #e2e8f0;cursor:pointer;transition:all .2s}
-.pro-card:hover{border-color:#00C2C3;box-shadow:0 4px 12px rgba(0,194,195,.15)}
-.pro-card.top{border-color:#f59e0b;background:linear-gradient(135deg,rgba(245,158,11,.05),#fff)}
-.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0}
-.trust-score{font-size:22px;font-weight:900;color:#00C2C3}
-.error-box{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:10px;font-size:13px;margin-top:8px}
-.success-box{background:#dcfce7;border:1px solid #86efac;color:#16a34a;padding:10px 14px;border-radius:10px;font-size:13px;margin-top:8px}
-select.input{cursor:pointer}
-textarea.input{resize:none;min-height:80px}
+.hero{background:var(--T);border-radius:22px;padding:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 12px 32px rgba(0,194,195,.4);margin-bottom:20px}
+.hero:active{transform:scale(.97)}
+.qg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.qi{border:1px solid #e8eef4;border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;transition:all .15s;background:var(--sf)}
+.qi:hover{border-color:var(--T);background:var(--TL)}.qi:active{transform:scale(.93)}
+.prg{height:5px;background:#e8f4f4;border-radius:3px;overflow:hidden;margin-top:8px}
+.prgf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--T),var(--N))}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sb-card{border:1.5px solid #e8eef4;border-radius:16px;padding:12px;cursor:pointer;transition:all .15s;background:var(--sf)}
+.sb-card:hover,.sb-card.on{border-color:var(--T);background:var(--TL)}
+.jcw{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.jc{font-size:12px;padding:6px 13px;border-radius:20px;background:#f0fafa;color:var(--T2);font-weight:600;border:1.5px solid var(--TM);cursor:pointer;transition:all .15s}
+.jc.on{background:var(--T);color:#fff;border-color:var(--T)}
+.cal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-mn{font-family:'Syne',sans-serif;font-size:15px;font-weight:800}
+.cal-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid #e8eef4;background:var(--sf);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.cal-dow span{text-align:center;font-size:11px;font-weight:600;color:var(--mu);padding:4px 0}
+.calg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
+.cd{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all .15s;font-weight:500}
+.cd.empty{cursor:default}.cd.past{color:#d0d0d0;cursor:default;background:#fafafa}.cd.today{border:2px solid var(--T);color:var(--T);font-weight:700}.cd.sel{background:var(--T);color:#fff;font-weight:700}.cd.avail{background:var(--TL);color:var(--T2)}
+.tsg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.ts{border:1.5px solid #e8eef4;border-radius:var(--r);padding:10px 5px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx);transition:all .15s;line-height:1.4}
+.ts.on{border-color:var(--T);background:var(--T);color:#fff}
+.warn{background:#fff8f0;border:1.5px solid #ff9800;border-radius:var(--r);padding:14px;margin-bottom:14px}
+.warn-t{font-size:13px;font-weight:700;color:#e65100;margin-bottom:5px}
+.warn-b{font-size:12px;color:#bf360c;line-height:1.6}
+.qrbox{background:#f8fcfc;border:2px dashed var(--TM);border-radius:20px;padding:18px;text-align:center;margin-bottom:14px}
+.mapbox{border-radius:20px;height:148px;overflow:hidden;margin-bottom:14px;position:relative;background:linear-gradient(160deg,#0d2818,#1a4028)}
+.mapg{position:absolute;inset:0;opacity:.15;background:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(0,194,195,.6) 30px,rgba(0,194,195,.6) 31px),repeating-linear-gradient(90deg,transparent,transparent 30px,rgba(0,194,195,.6) 30px,rgba(0,194,195,.6) 31px)}
+.cbcard{background:linear-gradient(135deg,var(--N),#0d2d50);border-radius:20px;padding:20px;margin-bottom:20px;color:#fff}
+.chwrap{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.chmsgs{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:9px}.chmsgs::-webkit-scrollbar{width:0}
+.msg{max-width:80%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5}
+.mme{align-self:flex-end;background:var(--T);color:#fff;border-bottom-right-radius:4px}
+.mot{align-self:flex-start;background:#f0f2f5;color:var(--tx);border-bottom-left-radius:4px}
+.msys{align-self:center;background:#f0f2f5;color:var(--mu);font-size:11px;padding:6px 14px;border-radius:20px}
+.chinp{display:flex;gap:10px;padding:12px 18px;border-top:1px solid rgba(0,0,0,.06);flex-shrink:0;background:var(--sf)}
+.chinp input{flex:1;padding:12px 16px;border:1.5px solid #e8eef4;border-radius:24px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:#fafcfe}
+.chinp button{width:42px;height:42px;border-radius:50%;border:none;background:var(--T);color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,194,195,.35)}
+.otp-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.otp-inp{width:50px;height:62px;border:1.5px solid #e8eef4;border-radius:14px;text-align:center;font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--tx);outline:none;transition:all .15s;background:#fafcfe}
+.otp-inp:focus{border-color:var(--T);background:var(--TL);transform:scale(1.05)}
+.inv{background:var(--sf);border:1px solid #e8eef4;border-radius:16px;padding:15px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.inv:hover{border-color:var(--T)}
+.st{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--mu);margin:0 0 10px}
+.div-line{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--mu);font-size:12px}
+.div-line::before,.div-line::after{content:'';flex:1;height:1px;background:#e8eef4}
+.mli{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;margin-bottom:8px;cursor:pointer;background:var(--sf);border:1px solid #e8eef4;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .15s}
+.mli:hover{border-color:var(--TM);box-shadow:0 4px 16px rgba(0,194,195,.08)}
+.mli-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;flex-shrink:0}
+.unread{background:var(--T);color:#fff;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+/* CANDIDATS */
+.cand{background:var(--sf);border:1.5px solid #e8eef4;border-radius:18px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.cand:hover{border-color:var(--T)}
+.cand.fav{border-color:#ffc107;background:linear-gradient(135deg,#fffef5,var(--sf))}
+/* RATING STARS */
+.rate-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #e8eef4}
+.stars-input{display:flex;gap:4px}
+.star{font-size:24px;cursor:pointer;color:#ddd;transition:color .15s}
+.star.on{color:#ffc107}
+/* TRACKING TIMELINE */
+.tl{display:flex;justify-content:space-between;position:relative;margin:16px 0}
+.tl::before{content:'';position:absolute;top:14px;left:14px;right:14px;height:2px;background:#e8eef4;z-index:0}
+.tl-step{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;flex:1}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:#e8eef4;display:flex;align-items:center;justify-content:center;font-size:13px;color:#999;margin-bottom:6px;transition:all .15s}
+.tl-dot.done{background:var(--T);color:#fff}
+.tl-dot.cur{background:var(--T);color:#fff;box-shadow:0 0 0 4px rgba(0,194,195,.2);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(0,194,195,.2)}50%{box-shadow:0 0 0 8px rgba(0,194,195,.1)}}
+.tl-lbl{font-size:10px;font-weight:600;color:var(--mu);text-align:center}
+.tl-step.done .tl-lbl,.tl-step.cur .tl-lbl{color:var(--T)}
 </style>
 </head>
 <body>
-
+<div class="phone">
 <div class="toast" id="toast"></div>
 
-<!-- LOGIN -->
-<div id="login" class="screen hidden" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px">
-  <div style="width:100%;max-width:400px">
-    <div style="text-align:center;margin-bottom:28px">
-      <div class="logo" style="font-size:32px;margin-bottom:8px"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-      <div style="color:#64748b;font-size:14px">Connecte-toi a ton compte</div>
+<!-- ═══ INSCRIPTION ═══ -->
+<div class="sc on" id="s-signup">
+<div style="flex:1;overflow-y:auto;padding:50px 26px 30px">
+  <div style="width:126px;height:5px;background:#d0d5dd;border-radius:3px;margin:0 auto 32px"></div>
+  <div style="text-align:center;margin-bottom:6px"><div class="logo"><span class="lt">Flex</span><span class="ln">Match</span></div><div style="font-size:11px;color:var(--mu);letter-spacing:.5px;margin-top:3px">LA CONNEXION AGILE</div></div>
+  <div style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:26px">Créez votre compte client</div>
+  <div class="fg"><label class="fl">Type de compte</label>
+    <div style="display:flex;gap:10px">
+      <div id="ct-p" class="sb-card on" style="flex:1;text-align:center;padding:14px 8px" onclick="selCT('particulier')"><div style="font-size:24px;margin-bottom:5px">👤</div><div style="font-size:13px;font-weight:600">Particulier</div></div>
+      <div id="ct-e" class="sb-card" style="flex:1;text-align:center;padding:14px 8px" onclick="selCT('entreprise')"><div style="font-size:24px;margin-bottom:5px">🏢</div><div style="font-size:13px;font-weight:600">Entreprise</div></div>
     </div>
-    <div class="card">
-      <div class="label">Email</div>
-      <input class="input" type="email" id="login-email" placeholder="ton@email.com" style="margin-bottom:14px">
-      <div class="label">Mot de passe</div>
-      <input class="input" type="password" id="login-pwd" placeholder="••••••••">
-      <div id="login-error" class="error-box hidden"></div>
-      <button class="btn btn-primary" onclick="doLogin()">Se connecter</button>
-      <div style="text-align:center;margin-top:14px;font-size:13px;color:#64748b">
-        Pas de compte ? <a href="#" onclick="showScreen('signup')" style="color:#00C2C3;font-weight:700">S'inscrire</a>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <div class="card" style="flex:1;text-align:center;padding:12px;margin:0">
-        <div style="font-size:18px">🔒</div>
-        <div style="font-size:10px;color:#64748b;font-weight:600;margin-top:4px">Securise</div>
-      </div>
-      <div class="card" style="flex:1;text-align:center;padding:12px;margin:0">
-        <div style="font-size:18px">🛡️</div>
-        <div style="font-size:10px;color:#64748b;font-weight:600;margin-top:4px">Trust OS</div>
-      </div>
-      <div class="card" style="flex:1;text-align:center;padding:12px;margin:0">
-        <div style="font-size:18px">🇫🇷</div>
-        <div style="font-size:10px;color:#64748b;font-weight:600;margin-top:4px">France</div>
-      </div>
+  </div>
+  <div class="fg"><label class="fl">Prénom & Nom</label><input class="fi" placeholder="Jean Dupont" id="inp-name"></div>
+  <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="jean@email.com" id="inp-email"></div>
+  <div class="fg"><label class="fl">Téléphone</label><input class="fi" type="tel" placeholder="+33 6 12 34 56 78"></div>
+  <div class="fg"><label class="fl">Adresse</label><input class="fi" placeholder="14 rue de la Paix, Paris 8e"></div>
+  <div class="fg"><label class="fl">Mot de passe</label><input class="fi" type="password" placeholder="••••••••" id="inp-pwd"></div>
+  <div id="entr-f" style="display:none">
+    <div class="fg"><label class="fl">Raison sociale</label><input class="fi" placeholder="Ma Société SARL"></div>
+    <div class="fg"><label class="fl">SIRET</label><input class="fi" placeholder="XXX XXX XXX XXXXX"></div>
+    <div class="fg"><label class="fl">Identifiant TVA</label><input class="fi" placeholder="FR12 XXXXXXXXX"></div>
+    <div class="fg"><label class="fl">Secteur d'activité</label><select class="fi"><option>Restauration</option><option>Logistique</option><option>Nettoyage</option><option>Événementiel</option><option>Hôtellerie</option><option>Commerce</option></select></div>
+  </div>
+  <div class="div-line">ou continuer avec</div>
+  <div style="display:flex;gap:10px;margin-bottom:16px">
+    <button style="flex:1;padding:14px;border:1.5px solid #e8eef4;border-radius:var(--R);background:var(--sf);cursor:pointer;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500">🍎 Apple</button>
+    <button style="flex:1;padding:14px;border:1.5px solid #e8eef4;border-radius:var(--R);background:var(--sf);cursor:pointer;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500">🌐 Google</button>
+  </div>
+  <button class="btn btnT" onclick="goOTP()">Créer mon compte →</button>
+  <p style="text-align:center;font-size:13px;color:var(--mu);margin-top:14px;cursor:pointer" onclick="show('s-login')">Déjà un compte ? <span style="color:var(--T);font-weight:600">Se connecter</span></p>
+</div>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="sc" id="s-login">
+<div style="flex:1;overflow-y:auto;padding:50px 26px 30px">
+  <div style="width:126px;height:5px;background:#d0d5dd;border-radius:3px;margin:0 auto 32px"></div>
+  <div style="text-align:center;margin-bottom:6px"><div class="logo"><span class="lt">Flex</span><span class="ln">Match</span></div><div style="font-size:11px;color:var(--mu);letter-spacing:.5px;margin-top:3px">LA CONNEXION AGILE</div></div>
+  <div style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:26px">Connectez-vous à votre compte</div>
+  <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="jean@email.com" id="login-email"></div>
+  <div class="fg"><label class="fl">Mot de passe</label><input class="fi" type="password" placeholder="••••••••" id="login-pwd"></div>
+  <button class="btn btnT" onclick="doLogin()">Se connecter →</button>
+  <p style="text-align:center;font-size:13px;color:var(--mu);margin-top:14px;cursor:pointer" onclick="show('s-signup')">Pas de compte ? <span style="color:var(--T);font-weight:600">S'inscrire</span></p>
+</div>
+</div>
+
+<!-- ═══ OTP ═══ -->
+<div class="sc" id="s-otp">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px"></span><span style="width:3.5px;height:8px"></span><span style="width:3.5px;height:11px"></span><span style="width:3.5px;height:14px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 28px;text-align:center">
+  <div style="width:80px;height:80px;background:var(--TL);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:22px">📧</div>
+  <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--tx);margin-bottom:8px">Vérifiez votre email</div>
+  <div style="font-size:14px;color:var(--mu);margin-bottom:30px;line-height:1.6">Code envoyé à<br><strong style="color:var(--tx)" id="otp-email">jean@email.com</strong></div>
+  <div class="otp-wrap">
+    <input class="otp-inp" maxlength="1" id="o1" oninput="oN(this,'o2')">
+    <input class="otp-inp" maxlength="1" id="o2" oninput="oN(this,'o3')">
+    <input class="otp-inp" maxlength="1" id="o3" oninput="oN(this,'o4')">
+    <input class="otp-inp" maxlength="1" id="o4" oninput="oN(this,'o5')">
+    <input class="otp-inp" maxlength="1" id="o5" oninput="oN(this,'o6')">
+    <input class="otp-inp" maxlength="1" id="o6" oninput="t('Code complet')">
+  </div>
+  <button class="btn btnT" onclick="verOTP()">Confirmer →</button>
+  <p style="font-size:13px;color:var(--mu);margin-top:16px;cursor:pointer" onclick="t('Code renvoyé ✓')">Pas reçu ? <span style="color:var(--T);font-weight:600">Renvoyer</span></p>
+</div>
+</div>
+
+<!-- ═══ ACCUEIL ═══ -->
+<div class="sc" id="s-home">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div><div class="logo"><span class="lt">Flex</span><span class="ln">Match</span></div><div style="font-size:11px;color:var(--mu)">La connexion agile</div></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div style="position:relative;cursor:pointer" onclick="show('s-notifs')"><span style="font-size:22px">🔔</span><div style="position:absolute;top:0;right:0;width:9px;height:9px;background:#f44336;border-radius:50%;border:2px solid #fff"></div></div>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer" onclick="tab(3)">JD</div>
     </div>
   </div>
 </div>
-
-<!-- SIGNUP -->
-<div id="signup" class="screen hidden" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);min-height:100vh;padding:20px">
-  <div style="max-width:400px;margin:0 auto;padding-top:40px">
-    <div style="text-align:center;margin-bottom:24px">
-      <div class="logo" style="font-size:28px;margin-bottom:6px"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-      <div style="color:#64748b;font-size:13px">Cree ton compte gratuitement</div>
-    </div>
-    <div class="card">
-      <div style="display:flex;gap:8px;margin-bottom:16px">
-        <button class="type-btn active" id="type-client" onclick="setType('CLIENT')">👤 Client</button>
-        <button class="type-btn" id="type-pro" onclick="setType('PRO')">💼 Prestataire</button>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <div class="label">Prenom</div>
-          <input class="input" id="signup-fname" placeholder="Mustapha">
-        </div>
-        <div>
-          <div class="label">Nom</div>
-          <input class="input" id="signup-lname" placeholder="Merair">
-        </div>
-      </div>
-      <div class="label">Email</div>
-      <input class="input" type="email" id="signup-email" placeholder="ton@email.com" style="margin-bottom:12px">
-      <div class="label">Mot de passe</div>
-      <input class="input" type="password" id="signup-pwd" placeholder="••••••••" style="margin-bottom:12px">
-      <div class="label">Ville</div>
-      <select class="input" id="signup-city" style="margin-bottom:4px">
-        <option>Paris</option><option>Lyon</option><option>Marseille</option>
-        <option>Toulouse</option><option>Bordeaux</option><option>Lille</option>
-        <option>Nice</option><option>Nantes</option>
-      </select>
-      <div id="signup-error" class="error-box hidden"></div>
-      <button class="btn btn-primary" onclick="doSignup()">Creer mon compte</button>
-      <div style="text-align:center;margin-top:12px;font-size:13px;color:#64748b">
-        Deja un compte ? <a href="#" onclick="showScreen('login')" style="color:#00C2C3;font-weight:700">Se connecter</a>
-      </div>
-    </div>
+<div class="scr">
+  <div class="hero" onclick="show('s-post')">
+    <div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:3px">Créer une mission</div><div style="font-size:12px;color:rgba(255,255,255,.8)">Trouvez un pro en quelques heures</div></div>
+    <div style="width:46px;height:46px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px">➕</div>
   </div>
+  <div class="st">Quick-Select</div>
+  <div class="qg">
+    <div class="qi" onclick="qt('Ménage')"><div style="font-size:24px;margin-bottom:4px">🧹</div><div style="font-size:10px;font-weight:600">Ménage</div><div style="font-size:10px;color:var(--T);font-weight:700">25€/h</div></div>
+    <div class="qi" onclick="qt('Lavage Auto')"><div style="font-size:24px;margin-bottom:4px">🚗</div><div style="font-size:10px;font-weight:600">Lavage</div><div style="font-size:10px;color:var(--T);font-weight:700">20€</div></div>
+    <div class="qi" onclick="qt('Plomberie')"><div style="font-size:24px;margin-bottom:4px">🔧</div><div style="font-size:10px;font-weight:600">Plomberie</div><div style="font-size:10px;color:var(--T);font-weight:700">60€/h</div></div>
+    <div class="qi" onclick="qt('IT / Tech')"><div style="font-size:24px;margin-bottom:4px">💻</div><div style="font-size:10px;font-weight:600">IT / Tech</div><div style="font-size:10px;color:var(--T);font-weight:700">50€/h</div></div>
+    <div class="qi" onclick="qt('Restauration')"><div style="font-size:24px;margin-bottom:4px">🍽️</div><div style="font-size:10px;font-weight:600">Resto</div><div style="font-size:10px;color:var(--T);font-weight:700">14€/h</div></div>
+    <div class="qi" onclick="qt('Logistique')"><div style="font-size:24px;margin-bottom:4px">📦</div><div style="font-size:10px;font-weight:600">Logist.</div><div style="font-size:10px;color:var(--T);font-weight:700">15€/h</div></div>
+    <div class="qi" onclick="qt('Nettoyage')"><div style="font-size:24px;margin-bottom:4px">🧽</div><div style="font-size:10px;font-weight:600">Nettoyage</div><div style="font-size:10px;color:var(--T);font-weight:700">18€/h</div></div>
+    <div class="qi" onclick="qt('Événementiel')"><div style="font-size:24px;margin-bottom:4px">🎪</div><div style="font-size:10px;font-weight:600">Événem.</div><div style="font-size:10px;color:var(--T);font-weight:700">20€/h</div></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="st" style="margin:0">Missions actives</span><span style="font-size:13px;color:var(--T);font-weight:600;cursor:pointer" onclick="tab(1)">Voir tout</span></div>
+  <div class="card" onclick="openM(0)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px"><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Lavage Auto</span><span class="pill pA">En route</span></div>
+    <div style="font-size:12px;color:var(--mu);margin-bottom:6px">Code : <strong style="color:var(--T)">M-2026-0418</strong> · 🚗 David P. · ⭐ 4.9</div>
+    <div class="prg"><div class="prgf" style="width:65%"></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:11px"><span style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--T)">25 €</span><span style="font-size:12px;color:var(--T);font-weight:600">Suivre →</span></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 10px"><span class="st" style="margin:0">Candidats reçus</span><span style="font-size:13px;color:var(--T);font-weight:600;cursor:pointer" onclick="show('s-candidates')">Voir tout</span></div>
+  <div class="card" onclick="show('s-candidates')">
+    <div style="display:flex;align-items:center;gap:11px"><div style="width:42px;height:42px;border-radius:50%;background:var(--TL);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--T2)">SM</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Sophie M. — Ménage</div><div style="font-size:11px;color:var(--mu)">⭐ 4.8 · 95% match · 2,3 km</div></div><span class="pill pT">⚡ Top match</span></div>
+  </div>
+  <div class="cbcard"><div style="font-size:12px;opacity:.7;margin-bottom:4px">Cashback disponible</div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--TM)">12,50 €</div><div style="font-size:12px;opacity:.7;margin-top:3px">5 missions · Valable 6 mois</div></div>
+</div>
+<div class="bnav"><button class="nb on" onclick="tab(0)"><span class="ni">🏠</span>Accueil</button><button class="nb" onclick="tab(1)"><span class="ni">📋</span>Missions</button><button class="nb" onclick="tab(2)"><span class="ni">💬</span>Messages</button><button class="nb" onclick="tab(3)"><span class="ni">👤</span>Compte</button></div>
 </div>
 
-<!-- HOME -->
-<div id="home" class="screen hidden">
-  <div class="header">
-    <div class="logo"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span style="font-size:12px;color:#64748b" id="home-greeting"></span>
-      <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#00C2C3,#0099a8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;cursor:pointer" id="home-avatar" onclick="navTab('profile')"></div>
-    </div>
+<!-- ═══ POSTER MISSION ═══ -->
+<div class="sc" id="s-post">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600;margin-bottom:7px" onclick="show('s-home')">←</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Créer une mission</div></div>
+<div class="scr">
+  <div class="st" style="margin-top:12px">Secteur</div>
+  <div class="sg" id="sg">
+    <div class="sb-card on" onclick="selS(this,'Restauration',['Serveur','Barman','Cuisinier','Runner','Plongeur'])"><div style="font-size:20px;margin-bottom:5px">🍽️</div><div style="font-size:13px;font-weight:600">Restauration</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Serveur · Barman · Cuisinier</div></div>
+    <div class="sb-card" onclick="selS(this,'Logistique',['Livreur','Manutentionnaire','VTC','Coursier'])"><div style="font-size:20px;margin-bottom:5px">📦</div><div style="font-size:13px;font-weight:600">Logistique</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Livreur · Manuten. · VTC</div></div>
+    <div class="sb-card" onclick="selS(this,'Nettoyage',['Ménage maison','Ménage bureau','Vitres','Repassage'])"><div style="font-size:20px;margin-bottom:5px">🧽</div><div style="font-size:13px;font-weight:600">Nettoyage</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Maison · Bureau · Vitres</div></div>
+    <div class="sb-card" onclick="selS(this,'Événementiel',['Animateur','Hôtesse','Technicien','Sécurité'])"><div style="font-size:20px;margin-bottom:5px">🎪</div><div style="font-size:13px;font-weight:600">Événementiel</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Hôtesse · Animateur · Tech</div></div>
+    <div class="sb-card" onclick="selS(this,'Domicile',['Baby-sitting','Jardinage','Bricolage','Déménagement'])"><div style="font-size:20px;margin-bottom:5px">🏠</div><div style="font-size:13px;font-weight:600">Domicile</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Baby · Jardin · Bricol.</div></div>
+    <div class="sb-card" onclick="selS(this,'Artisanat',['Plomberie','Électricité','Peinture','Serrurerie'])"><div style="font-size:20px;margin-bottom:5px">🔧</div><div style="font-size:13px;font-weight:600">Artisanat / BTP</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Plomb. · Élec. · Peint.</div></div>
+    <div class="sb-card" onclick="selS(this,'IT / Tech',['Dev web','Dev mobile','UI/UX','Support IT'])"><div style="font-size:20px;margin-bottom:5px">💻</div><div style="font-size:13px;font-weight:600">IT / Tech</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Dev · Design · Support</div></div>
+    <div class="sb-card" onclick="selS(this,'Auto',['Lavage','Mécanique','Convoyage','Carrosserie'])"><div style="font-size:20px;margin-bottom:5px">🚗</div><div style="font-size:13px;font-weight:600">Automobile</div><div style="font-size:11px;color:var(--mu);margin-top:2px">Lavage · Méca · Convoy.</div></div>
   </div>
-  <div class="content">
-    <div class="hero">
-      <div style="font-size:13px;opacity:.85;margin-bottom:4px">BONJOUR <span id="hero-name"></span> 👋</div>
-      <div style="font-size:22px;font-weight:900;margin-bottom:4px">Trouve un pro en 60s</div>
-      <div style="font-size:12px;opacity:.85">14 200 pros verifies · France entiere</div>
-    </div>
-    <div class="kpi-grid">
-      <div class="kpi" onclick="navTab('missions')">
-        <div class="kpi-value" id="home-missions-count">0</div>
-        <div class="kpi-label">MES MISSIONS</div>
-      </div>
-      <div class="kpi" style="background:linear-gradient(135deg,rgba(0,194,195,.1),#fff)">
-        <div class="kpi-value" style="color:#f59e0b">0 €</div>
-        <div class="kpi-label">CASHBACK</div>
-      </div>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">SECTEURS POPULAIRES</div>
-    <div class="sector-grid" id="home-sectors"></div>
-    <div style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">MES MISSIONS RECENTES</div>
-    <div id="home-recent-missions"></div>
+  <div class="st">Compétence requise</div>
+  <div class="jcw" id="jcw"><div class="jc on">Serveur</div><div class="jc">Barman</div><div class="jc">Cuisinier</div><div class="jc">Runner</div><div class="jc">Plongeur</div></div>
+  <div class="fg"><label class="fl">Titre de la mission</label><input class="fi" placeholder="ex: Serveur événement entreprise"></div>
+  <div class="fg"><label class="fl">Description / Objectif</label><textarea class="fi" placeholder="Décrivez précisément la mission, l'objectif, les attentes..."></textarea></div>
+  <div class="fg"><label class="fl">📍 Localisation</label><input class="fi" placeholder="Adresse complète de la mission"></div>
+  <div class="st">📅 Date & créneau</div>
+  <div class="cal-hd"><button class="cal-btn">‹</button><span class="cal-mn">Avril 2026</span><button class="cal-btn">›</button></div>
+  <div class="cal-dow"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+  <div class="calg" id="calg"></div>
+  <div class="tsg">
+    <div class="ts" onclick="selT(this)">Matin<br><small style="font-weight:400">8h–12h</small></div>
+    <div class="ts on" onclick="selT(this)">Après-midi<br><small style="font-weight:400">13h–17h</small></div>
+    <div class="ts" onclick="selT(this)">Soir<br><small style="font-weight:400">18h–22h</small></div>
+    <div class="ts" onclick="selT(this)">Flexible</div>
+    <div class="ts" onclick="selT(this)">Urgent<br><small style="font-weight:400">Dans 2h</small></div>
+    <div class="ts" onclick="selT(this)">Nuit<br><small style="font-weight:400">22h–6h</small></div>
   </div>
-  <div class="nav">
-    <button class="nav-btn active" id="nav-home" onclick="navTab('home')"><span class="nav-icon">🏠</span>Accueil</button>
-    <button class="nav-btn" id="nav-post" onclick="navTab('post')"><span class="nav-icon">➕</span>Poster</button>
-    <button class="nav-btn" id="nav-missions" onclick="navTab('missions')"><span class="nav-icon">📋</span>Missions</button>
-    <button class="nav-btn" id="nav-messages" onclick="navTab('messages')"><span class="nav-icon">💬</span>Messages</button>
-    <button class="nav-btn" id="nav-profile" onclick="navTab('profile')"><span class="nav-icon">👤</span>Profil</button>
-  </div>
+  <div class="warn"><div class="warn-t">⚠️ Politique d'annulation 48h</div><div class="warn-b">Toute annulation moins de <strong>48h</strong> après confirmation entraîne <strong>50% de pénalité</strong>. Cette règle protège les professionnels.</div></div>
+  <div class="fg"><label class="fl">Budget estimé (€)</label><input class="fi" type="number" placeholder="ex: 50"></div>
+  <button class="btn btnT" onclick="postM()">Publier la mission →</button>
+</div>
 </div>
 
-<!-- POST MISSION -->
-<div id="post" class="screen hidden">
-  <div class="header">
-    <div class="logo"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-    <div style="font-size:13px;color:#64748b">Nouvelle mission</div>
+<!-- ═══ MISSION PUBLIÉE — CANDIDATS ═══ -->
+<div class="sc" id="s-candidates">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600;margin-bottom:7px" onclick="show('s-home')">←</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Candidats reçus</div><div style="font-size:11px;color:var(--mu);margin-top:3px">Code mission : <strong style="color:var(--T)">M-2026-0421</strong> · 5 candidats</div></div>
+<div class="scr">
+  <div style="height:10px"></div>
+  <div style="background:var(--TL);border-radius:14px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+    <div style="font-size:22px">🤖</div>
+    <div style="font-size:11px;color:var(--N);line-height:1.5">L'<strong>IA FlexMatch</strong> a sélectionné les <strong>3 meilleurs profils</strong> selon localisation, score et historique.</div>
   </div>
-  <div class="content">
-    <div class="form-section">
-      <div class="label">Secteur</div>
-      <div class="sector-grid" id="post-sectors"></div>
+  <div class="st">⚡ TOP MATCH (IA)</div>
+  <div class="cand fav">
+    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff">SM</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700">Sophie M.</div><div style="font-size:11px;color:#FFC107">★★★★★ 4.9 · 47 missions</div></div>
+      <span style="font-size:18px;cursor:pointer" onclick="event.stopPropagation();this.textContent=this.textContent==='⭐'?'☆':'⭐'">⭐</span>
     </div>
-    <div class="form-section">
-      <div class="label">Titre de la mission</div>
-      <input class="input" id="post-title" placeholder="Ex: Plombier qualifie urgence" style="margin-bottom:12px">
-      <div class="label">Description</div>
-      <textarea class="input" id="post-desc" placeholder="Decris le travail..."></textarea>
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <span class="pill pG">95% match IA</span>
+      <span class="pill pT">2,3 km</span>
+      <span class="pill pP">Score 96</span>
     </div>
-    <div class="form-section">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div>
-          <div class="label">Ville</div>
-          <select class="input" id="post-city">
-            <option>Paris</option><option>Lyon</option><option>Marseille</option>
-            <option>Toulouse</option><option>Bordeaux</option><option>Lille</option>
-          </select>
-        </div>
-        <div>
-          <div class="label">Tarif (euros)</div>
-          <input class="input" type="number" id="post-price" value="100">
-        </div>
-      </div>
-    </div>
-    <div class="card" style="background:linear-gradient(135deg,rgba(0,194,195,.08),#fff);border:1px solid rgba(0,194,195,.2)">
-      <div style="display:flex;gap:10px;align-items:flex-start">
-        <span style="font-size:24px">🤖</span>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#00C2C3;margin-bottom:4px">SUGGESTION IA</div>
-          <div style="font-size:12px;color:#475569" id="ai-suggest">Selectionne un secteur pour voir la suggestion IA</div>
-        </div>
-      </div>
-    </div>
-    <div id="post-error" class="error-box hidden"></div>
-    <button class="btn btn-primary" onclick="postMission()">Publier la mission</button>
+    <div style="font-size:12px;color:var(--mu);margin-bottom:10px">Disponible immédiatement · 0 retard · Vérifiée</div>
+    <div style="display:flex;gap:8px"><button class="btn sm btnO" onclick="show('s-candidate-profile')" style="flex:1">Voir profil</button><button class="btn sm btnT" onclick="acceptCand()" style="flex:1">✓ Accepter</button></div>
   </div>
-  <div class="nav">
-    <button class="nav-btn" id="nav2-home" onclick="navTab('home')"><span class="nav-icon">🏠</span>Accueil</button>
-    <button class="nav-btn active" id="nav2-post" onclick="navTab('post')"><span class="nav-icon">➕</span>Poster</button>
-    <button class="nav-btn" id="nav2-missions" onclick="navTab('missions')"><span class="nav-icon">📋</span>Missions</button>
-    <button class="nav-btn" id="nav2-messages" onclick="navTab('messages')"><span class="nav-icon">💬</span>Messages</button>
-    <button class="nav-btn" id="nav2-profile" onclick="navTab('profile')"><span class="nav-icon">👤</span>Profil</button>
+  <div class="cand fav">
+    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px">
+      <div style="width:48px;height:48px;border-radius:50%;background:#f0eefc;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#5a50c4">DP</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700">David P.</div><div style="font-size:11px;color:#FFC107">★★★★★ 4.8 · 32 missions</div></div>
+      <span style="font-size:18px;cursor:pointer" onclick="event.stopPropagation();this.textContent=this.textContent==='⭐'?'☆':'⭐'">☆</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap"><span class="pill pG">87% match IA</span><span class="pill pT">3,1 km</span><span class="pill pP">Score 88</span></div>
+    <div style="display:flex;gap:8px"><button class="btn sm btnO" style="flex:1">Voir profil</button><button class="btn sm btnT" onclick="acceptCand()" style="flex:1">✓ Accepter</button></div>
+  </div>
+  <div class="st" style="margin-top:14px">AUTRES CANDIDATS</div>
+  <div class="cand">
+    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px">
+      <div style="width:48px;height:48px;border-radius:50%;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#e65100">ML</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700">Marc L.</div><div style="font-size:11px;color:#FFC107">★★★★☆ 4.5 · 18 missions</div></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:10px"><span class="pill pT">5,8 km</span><span class="pill pP">Score 75</span></div>
+    <div style="display:flex;gap:8px"><button class="btn sm btnO" style="flex:1">Voir profil</button><button class="btn sm btnT" onclick="acceptCand()" style="flex:1">✓ Accepter</button></div>
   </div>
 </div>
-
-<!-- MISSIONS LIST -->
-<div id="missions" class="screen hidden">
-  <div class="header">
-    <div class="logo"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-    <div style="font-size:13px;color:#64748b">Mes missions</div>
-  </div>
-  <div class="content">
-    <div style="display:flex;gap:6px;margin-bottom:14px">
-      <button class="badge badge-open" style="padding:6px 14px;cursor:pointer;font-size:11px" onclick="filterMissions('all')">Toutes</button>
-      <button class="badge badge-pending" style="padding:6px 14px;cursor:pointer;font-size:11px" onclick="filterMissions('OPEN')">Ouvertes</button>
-    </div>
-    <div id="missions-list"></div>
-  </div>
-  <div class="nav">
-    <button class="nav-btn" onclick="navTab('home')"><span class="nav-icon">🏠</span>Accueil</button>
-    <button class="nav-btn" onclick="navTab('post')"><span class="nav-icon">➕</span>Poster</button>
-    <button class="nav-btn active" onclick="navTab('missions')"><span class="nav-icon">📋</span>Missions</button>
-    <button class="nav-btn" onclick="navTab('messages')"><span class="nav-icon">💬</span>Messages</button>
-    <button class="nav-btn" onclick="navTab('profile')"><span class="nav-icon">👤</span>Profil</button>
-  </div>
 </div>
 
-<!-- MESSAGES -->
-<div id="messages" class="screen hidden">
-  <div class="header">
-    <div class="logo"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-    <div style="font-size:13px;color:#64748b">Messages</div>
+<!-- ═══ SUIVI MISSION (DETAIL) ═══ -->
+<div class="sc" id="s-detail">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600;margin-bottom:7px" onclick="show('s-home')">← Suivi mission</div></div>
+<div class="scr">
+  <div style="background:linear-gradient(135deg,var(--T),var(--N));border-radius:22px;padding:20px;margin-bottom:16px;color:#fff">
+    <div style="font-size:11px;opacity:.8;margin-bottom:3px">Code mission : <strong>M-2026-0418</strong></div>
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:3px" id="md-t">Lavage Auto Intérieur</div>
+    <div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--TM)" id="md-p">25 €</div>
   </div>
-  <div class="content">
-    <div class="card" style="text-align:center;padding:40px 20px">
-      <div style="font-size:48px;margin-bottom:12px">💬</div>
-      <div style="font-weight:700;color:#1e293b;margin-bottom:6px">Messagerie</div>
-      <div style="color:#94a3b8;font-size:13px">Tes conversations avec les pros apparaitront ici</div>
+  <!-- TIMELINE -->
+  <div class="card cs">
+    <div class="st" style="margin-bottom:0">PROGRESSION</div>
+    <div class="tl">
+      <div class="tl-step done"><div class="tl-dot done">✓</div><div class="tl-lbl">Confirmé</div></div>
+      <div class="tl-step done"><div class="tl-dot done">✓</div><div class="tl-lbl">En route</div></div>
+      <div class="tl-step cur"><div class="tl-dot cur">🚗</div><div class="tl-lbl">Arrivée</div></div>
+      <div class="tl-step"><div class="tl-dot">📷</div><div class="tl-lbl">Démarré</div></div>
+      <div class="tl-step"><div class="tl-dot">✅</div><div class="tl-lbl">Terminé</div></div>
     </div>
   </div>
-  <div class="nav">
-    <button class="nav-btn" onclick="navTab('home')"><span class="nav-icon">🏠</span>Accueil</button>
-    <button class="nav-btn" onclick="navTab('post')"><span class="nav-icon">➕</span>Poster</button>
-    <button class="nav-btn" onclick="navTab('missions')"><span class="nav-icon">📋</span>Missions</button>
-    <button class="nav-btn active" onclick="navTab('messages')"><span class="nav-icon">💬</span>Messages</button>
-    <button class="nav-btn" onclick="navTab('profile')"><span class="nav-icon">👤</span>Profil</button>
+  <!-- INTERVENANT -->
+  <div class="card cs">
+    <div class="st" style="margin-bottom:10px">L'INTERVENANT</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff">DP</div>
+      <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">David P.</div><div style="color:#FFC107;font-size:13px;margin-top:2px">★★★★★</div><div style="font-size:11px;color:var(--mu)">4.9 · 127 missions · ID: FM-P-00087</div></div>
+      <button class="btn sm btnT" onclick="t('📞 Appel...')">📞</button>
+    </div>
   </div>
+  <!-- GPS LIVE -->
+  <div class="mapbox"><div class="mapg"></div><div style="position:absolute;top:36%;left:40%;font-size:28px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))">📍</div><div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;font-size:12px;padding:5px 14px;border-radius:20px">🟢 GPS live · 1,2 km · ~14 min</div><div style="position:absolute;top:10px;right:10px;background:rgba(0,194,195,.9);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:10px">🗺 Apple Maps</div></div>
+  <!-- QR -->
+  <div id="qr-sec" class="qrbox">
+    <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:12px">🔒 Scan pour démarrer la mission</div>
+    <div style="width:120px;height:120px;margin:0 auto 12px;background:#fff;border-radius:14px;padding:8px;box-shadow:0 4px 16px rgba(0,194,195,.18)">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="104" height="104">
+        <rect width="100" height="100" fill="white"/>
+        <rect x="10" y="10" width="30" height="30" fill="none" stroke="#0d1821" stroke-width="4"/><rect x="16" y="16" width="18" height="18" fill="#0d1821"/>
+        <rect x="60" y="10" width="30" height="30" fill="none" stroke="#0d1821" stroke-width="4"/><rect x="66" y="16" width="18" height="18" fill="#0d1821"/>
+        <rect x="10" y="60" width="30" height="30" fill="none" stroke="#0d1821" stroke-width="4"/><rect x="16" y="66" width="18" height="18" fill="#0d1821"/>
+        <rect x="46" y="10" width="7" height="7" fill="#0d1821"/><rect x="46" y="22" width="7" height="7" fill="#0d1821"/>
+        <rect x="10" y="46" width="7" height="7" fill="#0d1821"/><rect x="22" y="46" width="7" height="7" fill="#0d1821"/><rect x="34" y="46" width="7" height="7" fill="#0d1821"/>
+        <rect x="46" y="46" width="7" height="7" fill="#00C2C3"/>
+        <rect x="60" y="46" width="7" height="7" fill="#0d1821"/><rect x="72" y="46" width="7" height="7" fill="#0d1821"/><rect x="84" y="46" width="7" height="7" fill="#0d1821"/>
+        <rect x="60" y="60" width="7" height="7" fill="#0d1821"/><rect x="72" y="72" width="7" height="7" fill="#0d1821"/>
+        <rect x="60" y="84" width="7" height="7" fill="#0d1821"/><rect x="84" y="60" width="7" height="7" fill="#0d1821"/><rect x="84" y="84" width="7" height="7" fill="#0d1821"/>
+      </svg>
+    </div>
+    <div style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">Présentez ce QR au pro pour démarrer<br>Code mission : <strong>M-2026-0418</strong></div>
+  </div>
+  <button class="btn btnT" onclick="show('s-rate')">✓ Mission terminée — Noter</button>
+  <button class="btn btnR" onclick="show('s-dispute')">⚠️ Signaler un litige</button>
+</div>
 </div>
 
-<!-- PROFILE -->
-<div id="profile" class="screen hidden">
-  <div class="header">
-    <div class="logo"><span>Flex</span><span style="color:#1e293b">Match</span></div>
-    <div style="font-size:13px;color:#64748b">Mon profil</div>
+<!-- ═══ NOTATION ═══ -->
+<div class="sc" id="s-rate">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600;margin-bottom:7px" onclick="show('s-detail')">←</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Noter la prestation</div></div>
+<div class="scr">
+  <div style="height:14px"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+    <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff">DP</div>
+    <div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800">David P.</div><div style="font-size:12px;color:var(--mu)">Mission M-2026-0418 · Lavage Auto</div></div>
   </div>
-  <div class="content">
-    <div class="card" style="text-align:center;padding:24px">
-      <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#00C2C3,#0099a8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:22px;margin:0 auto 12px" id="profile-avatar"></div>
-      <div style="font-size:18px;font-weight:900;color:#1e293b" id="profile-name"></div>
-      <div style="font-size:12px;color:#94a3b8;margin-top:4px" id="profile-email"></div>
-      <div style="display:inline-block;background:#e0fafa;color:#00C2C3;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:8px" id="profile-type"></div>
-    </div>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-value" id="profile-missions">0</div><div class="kpi-label">MISSIONS</div></div>
-      <div class="kpi"><div class="kpi-value" style="color:#f59e0b">0 €</div><div class="kpi-label">CASHBACK</div></div>
-    </div>
-    <div class="card">
-      <div style="font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:12px">COORDONNEES</div>
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9">
-        <span>📧</span>
-        <span style="font-size:13px;color:#475569" id="profile-email-detail"></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9">
-        <span>📍</span>
-        <span style="font-size:13px;color:#475569" id="profile-city"></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
-        <span>🔒</span>
-        <span style="font-size:13px;color:#00C2C3;font-weight:600">Single Device Lock actif</span>
-      </div>
-    </div>
-    <button class="btn btn-danger" onclick="doLogout()">Deconnexion</button>
+  <div class="card cs">
+    <div class="rate-row"><span style="font-size:13px;font-weight:600">⏰ Ponctualité</span><div class="stars-input" data-cat="ponctualite"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+    <div class="rate-row"><span style="font-size:13px;font-weight:600">💼 Sérieux</span><div class="stars-input" data-cat="serieux"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+    <div class="rate-row"><span style="font-size:13px;font-weight:600">⚡ Efficacité</span><div class="stars-input" data-cat="efficacite"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+    <div class="rate-row" style="border:none"><span style="font-size:13px;font-weight:600">😊 Sympathie</span><div class="stars-input" data-cat="sympathie"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
   </div>
-  <div class="nav">
-    <button class="nav-btn" onclick="navTab('home')"><span class="nav-icon">🏠</span>Accueil</button>
-    <button class="nav-btn" onclick="navTab('post')"><span class="nav-icon">➕</span>Poster</button>
-    <button class="nav-btn" onclick="navTab('missions')"><span class="nav-icon">📋</span>Missions</button>
-    <button class="nav-btn" onclick="navTab('messages')"><span class="nav-icon">💬</span>Messages</button>
-    <button class="nav-btn active" onclick="navTab('profile')"><span class="nav-icon">👤</span>Profil</button>
+  <div class="fg" style="margin-top:14px"><label class="fl">Commentaire (optionnel)</label><textarea class="fi" placeholder="Partagez votre expérience..."></textarea></div>
+  <div class="fg">
+    <label class="fl">Ajouter aux favoris ?</label>
+    <div style="display:flex;gap:8px"><button class="btn sm btnO" style="flex:1">Non, juste cette fois</button><button class="btn sm btnT" style="flex:1" onclick="t('⭐ Ajouté aux favoris')">⭐ Ajouter</button></div>
   </div>
+  <button class="btn btnT" onclick="t('✅ Note envoyée — Merci !');setTimeout(()=>show('s-home'),1500)">Envoyer la note</button>
+</div>
 </div>
 
+<!-- ═══ LITIGE ═══ -->
+<div class="sc" id="s-dispute">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600;margin-bottom:7px" onclick="show('s-detail')">←</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Signaler un litige</div></div>
+<div class="scr">
+  <div style="height:14px"></div>
+  <div class="warn"><div class="warn-t">⚠️ Important</div><div class="warn-b">Notre équipe traite tous les litiges sous 24h. Soyez précis pour faciliter le traitement.</div></div>
+  <div class="fg"><label class="fl">Type de litige</label>
+    <select class="fi"><option>Pro absent / no-show</option><option>Pro en retard important</option><option>Travail mal exécuté</option><option>Comportement inapproprié</option><option>Heures non conformes</option><option>Autre</option></select>
+  </div>
+  <div class="fg"><label class="fl">Description détaillée</label><textarea class="fi" placeholder="Expliquez précisément la situation..." style="height:120px"></textarea></div>
+  <div class="fg"><label class="fl">📎 Pièces jointes (photos, vidéos)</label><div style="border:2px dashed #e8eef4;border-radius:var(--r);padding:20px;text-align:center;cursor:pointer" onclick="t('📎 Ajout fichier')"><div style="font-size:24px;margin-bottom:5px">📎</div><div style="font-size:12px;color:var(--mu)">Touchez pour ajouter</div></div></div>
+  <button class="btn btnR" onclick="t('🚨 Litige envoyé · Ticket #FM-T-4821');setTimeout(()=>show('s-home'),1500)">Envoyer le litige</button>
+  <button class="btn btnO" onclick="show('s-detail')">Annuler</button>
+</div>
+</div>
+
+<!-- ═══ MISSIONS ═══ -->
+<div class="sc" id="s-missions">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Mes missions</span><button class="btn sm btnT" onclick="show('s-post')">+ Nouveau</button></div></div>
+<div class="scr">
+  <div style="height:12px"></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:3px">
+    <div style="flex-shrink:0;padding:8px 16px;border-radius:20px;background:var(--T);color:#fff;font-size:12px;font-weight:700">En cours (1)</div>
+    <div style="flex-shrink:0;padding:8px 16px;border-radius:20px;background:#f0fafa;color:var(--mu);font-size:12px">Publiées (1)</div>
+    <div style="flex-shrink:0;padding:8px 16px;border-radius:20px;background:#f0fafa;color:var(--mu);font-size:12px">Terminées (8)</div>
+    <div style="flex-shrink:0;padding:8px 16px;border-radius:20px;background:#f0fafa;color:var(--mu);font-size:12px">Annulées (0)</div>
+  </div>
+  <div class="card" onclick="openM(0)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Lavage Auto</span><span class="pill pA">En route</span></div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:8px">Code : <strong style="color:var(--T)">M-2026-0418</strong> · 🚗 David P.</div>
+    <div class="prg"><div class="prgf" style="width:65%"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--T)">25 €</span><span style="font-size:12px;color:var(--T);font-weight:600">Suivre →</span></div>
+  </div>
+  <div class="card" onclick="show('s-candidates')">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Serveur événement</span><span class="pill pP">5 candidats</span></div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:6px">Code : <strong style="color:var(--T)">M-2026-0421</strong> · Sam. 19h</div>
+    <div style="display:flex;justify-content:space-between"><span style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--T)">120 €</span><span style="font-size:12px;color:var(--T);font-weight:600">Voir candidats →</span></div>
+  </div>
+  <div class="st" style="margin-top:16px">Terminées</div>
+  <div class="card cs"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:700">Plomberie urgence</span><span class="pill pG">✓ Validée</span></div><div style="font-size:11px;color:var(--mu);margin-bottom:7px">Code : M-2026-0410 · 🔧 Marc L.</div><div style="display:flex;justify-content:space-between"><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--T)">85 €</span><span style="color:#FFC107;font-size:13px">★★★★★</span></div></div>
+  <div class="card cs"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:700">Ménage complet</span><span class="pill pG">✓ Validée</span></div><div style="font-size:11px;color:var(--mu);margin-bottom:7px">Code : M-2026-0405 · 🧹 Sophie M.</div><div style="display:flex;justify-content:space-between"><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--T)">75 €</span><span style="color:#FFC107;font-size:13px">★★★★★</span></div></div>
+</div>
+<div class="bnav"><button class="nb" onclick="tab(0)"><span class="ni">🏠</span>Accueil</button><button class="nb on" onclick="tab(1)"><span class="ni">📋</span>Missions</button><button class="nb" onclick="tab(2)"><span class="ni">💬</span>Messages</button><button class="nb" onclick="tab(3)"><span class="ni">👤</span>Compte</button></div>
+</div>
+
+<!-- ═══ MESSAGES ═══ -->
+<div class="sc" id="s-messages">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Messages</span></div>
+<div class="scr">
+  <div style="height:12px"></div>
+  <div class="mli" style="border-color:var(--TM);background:linear-gradient(135deg,#f8fffe,#f0fafa)" onclick="show('s-aide')">
+    <div class="mli-av" style="background:linear-gradient(135deg,var(--T),var(--N))"><span style="font-size:22px">🤖</span></div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:700">Centre d'aide FlexMatch</div><div style="font-size:12px;color:var(--mu);margin-top:2px">Assistance IA 24/7</div></div>
+    <div style="width:9px;height:9px;border-radius:50%;background:var(--T)"></div>
+  </div>
+  <div class="mli" onclick="show('s-chat')">
+    <div class="mli-av" style="background:var(--TL);color:var(--T2)">DP</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:700">David P. — Lavage Auto</div><div style="font-size:12px;color:var(--mu);margin-top:2px">Je serai là dans ~14 min 🚗</div></div>
+    <div style="text-align:right"><div style="font-size:11px;color:var(--mu);margin-bottom:6px">14:32</div><div class="unread">1</div></div>
+  </div>
+  <div class="mli">
+    <div class="mli-av" style="background:#f0eefc;color:#5a50c4">SM</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:700">Sophie M. — Ménage</div><div style="font-size:12px;color:var(--mu);margin-top:2px">Merci pour votre confiance ! 🙏</div></div>
+    <div style="font-size:11px;color:var(--mu)">Hier</div>
+  </div>
+</div>
+<div class="bnav"><button class="nb" onclick="tab(0)"><span class="ni">🏠</span>Accueil</button><button class="nb" onclick="tab(1)"><span class="ni">📋</span>Missions</button><button class="nb on" onclick="tab(2)"><span class="ni">💬</span>Messages</button><button class="nb" onclick="tab(3)"><span class="ni">👤</span>Compte</button></div>
+</div>
+
+<!-- ═══ CHAT ═══ -->
+<div class="sc" id="s-chat">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb" style="border-bottom:1px solid rgba(0,0,0,.06)">
+  <div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600" onclick="show('s-messages')">←</div><div style="width:38px;height:38px;border-radius:50%;background:var(--TL);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--T2)">DP</div><div><div style="font-size:14px;font-weight:700">David P.</div><div style="font-size:11px;color:var(--T)">● En ligne · M-2026-0418</div></div></div><span style="font-size:20px;cursor:pointer" onclick="t('📞')">📞</span></div>
+</div>
+<div class="chwrap">
+  <div class="chmsgs" id="chat-msgs">
+    <div class="msys">Mission : Lavage Auto · Auj. 14h30</div>
+    <div class="msg mot">Bonjour ! Je suis en route, ~14 min. 🚗</div>
+    <div class="msg mme">Super, je vous attends. Le véhicule est dans l'allée.</div>
+    <div class="msys">📍 David est à 1,2 km</div>
+  </div>
+  <div class="chinp"><input id="chat-inp" placeholder="Message..." onkeydown="if(event.key==='Enter')sChat()"><button onclick="sChat()">↑</button></div>
+</div>
+</div>
+
+<!-- ═══ CENTRE D'AIDE ═══ -->
+<div class="sc" id="s-aide">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb" style="border-bottom:1px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600" onclick="show('s-messages')">←</div><div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-size:20px">🤖</div><div><div style="font-size:14px;font-weight:700">Centre d'aide</div><div style="font-size:11px;color:var(--T)">IA FlexMatch 24/7</div></div></div></div>
+<div class="chwrap">
+  <div class="chmsgs" id="aide-msgs">
+    <div class="msg mot" style="background:var(--TL);color:var(--N);border-bottom-left-radius:4px">Bonjour 👋 Comment puis-je vous aider ?</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px" id="aide-btns">
+      <button onclick="aR('annulation')" style="padding:8px 14px;border:1.5px solid var(--T);border-radius:20px;background:transparent;color:var(--T);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Annuler</button>
+      <button onclick="aR('litige')" style="padding:8px 14px;border:1.5px solid var(--T);border-radius:20px;background:transparent;color:var(--T);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Litige</button>
+      <button onclick="aR('paiement')" style="padding:8px 14px;border:1.5px solid var(--T);border-radius:20px;background:transparent;color:var(--T);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Paiement</button>
+      <button onclick="aR('facture')" style="padding:8px 14px;border:1.5px solid var(--T);border-radius:20px;background:transparent;color:var(--T);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Facture</button>
+    </div>
+  </div>
+  <div class="chinp"><input id="aide-inp" placeholder="Question..." onkeydown="if(event.key==='Enter')sAide()"><button onclick="sAide()">↑</button></div>
+</div>
+</div>
+
+<!-- ═══ COMPTE ═══ -->
+<div class="sc" id="s-compte">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Mon compte</span></div>
+<div class="scr">
+  <div style="height:12px"></div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--T),var(--N));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff">JD</div>
+    <div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Jean Dupont</div><div style="font-size:12px;color:var(--mu);margin-top:2px">👤 Particulier · Depuis jan. 2026</div><div style="font-size:12px;color:var(--T);font-weight:700;margin-top:3px">ID : FM-C-00124</div></div>
+  </div>
+  <div class="cbcard"><div style="font-size:11px;opacity:.7;margin-bottom:4px">Cashback disponible</div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--TM)">12,50 €</div><div style="font-size:11px;opacity:.7;margin-top:3px">5 missions · Valable 6 mois</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+    <div style="background:#f0fafa;border-radius:18px;padding:14px"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--T)">8</div><div style="font-size:11px;color:var(--mu)">Missions</div></div>
+    <div style="background:#f0fafa;border-radius:18px;padding:14px"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--T)">4.9★</div><div style="font-size:11px;color:var(--mu)">Note donnée</div></div>
+  </div>
+  <!-- COORDONNÉES -->
+  <div class="st">Mes coordonnées</div>
+  <div class="card cs">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:13px;color:var(--tx)">📧 jean.dupont@email.com</span><span style="font-size:12px;color:var(--T);font-weight:600;cursor:pointer" onclick="t('✏️ Modification')">Modifier</span></div>
+    <div style="font-size:13px;color:var(--tx);margin-bottom:10px">📱 +33 6 12 34 56 78</div>
+    <div style="font-size:13px;color:var(--tx);margin-bottom:10px">📍 14 rue de la Paix, Paris 8e</div>
+    <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;color:var(--tx)">🪪 Pièce d'identité</span><span class="pill pG">✓ Vérifiée</span></div>
+  </div>
+  <!-- FAVORIS -->
+  <div class="st">Mes prestataires favoris (3)</div>
+  <div class="card cs">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:38px;height:38px;border-radius:50%;background:#f0eefc;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#5a50c4">SM</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Sophie M.</div><div style="font-size:11px;color:#FFC107">★ 4.9 · Ménage</div></div><span style="font-size:18px">⭐</span></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:38px;height:38px;border-radius:50%;background:var(--TL);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--T2)">DP</div><div style="flex:1"><div style="font-size:13px;font-weight:700">David P.</div><div style="font-size:11px;color:#FFC107">★ 4.8 · Auto</div></div><span style="font-size:18px">⭐</span></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#e65100">ML</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Marc L.</div><div style="font-size:11px;color:#FFC107">★ 4.7 · Plomberie</div></div><span style="font-size:18px">⭐</span></div>
+  </div>
+  <!-- FACTURES MENSUELLES -->
+  <div class="st">Mes factures</div>
+  <div class="inv" onclick="t('📄 Facture PDF téléchargée')"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:700">Avril 2026</div><div style="font-size:12px;color:var(--mu);margin-top:2px">3 missions · FM-C-2026-04</div></div><div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--T)">185 €</div><div style="font-size:11px;color:var(--T);margin-top:2px">⬇ PDF</div></div></div></div>
+  <div class="inv" onclick="t('📄 Facture PDF téléchargée')"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:700">Mars 2026</div><div style="font-size:12px;color:var(--mu);margin-top:2px">2 missions · FM-C-2026-03</div></div><div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--T)">110 €</div><div style="font-size:11px;color:var(--T);margin-top:2px">⬇ PDF</div></div></div></div>
+  <div class="inv" onclick="t('📄 Facture PDF téléchargée')"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:700">Février 2026</div><div style="font-size:12px;color:var(--mu);margin-top:2px">1 mission · FM-C-2026-02</div></div><div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--T)">85 €</div><div style="font-size:11px;color:var(--T);margin-top:2px">⬇ PDF</div></div></div></div>
+  <button class="btn btnO" onclick="t('⚙️ Paramètres')">⚙️ Paramètres</button>
+  <button class="btn btnR" onclick="doLogout()" style="margin-top:8px">🚪 Déconnexion</button>
+</div>
+<div class="bnav"><button class="nb" onclick="tab(0)"><span class="ni">🏠</span>Accueil</button><button class="nb" onclick="tab(1)"><span class="ni">📋</span>Missions</button><button class="nb" onclick="tab(2)"><span class="ni">💬</span>Messages</button><button class="nb on" onclick="tab(3)"><span class="ni">👤</span>Compte</button></div>
+</div>
+
+<!-- NOTIFS -->
+<div class="sc" id="s-notifs">
+<div class="sb"><span class="stime">9:41</span><div class="notch-pill"></div><div class="sicons"><div class="sig"><span style="width:3.5px;height:5px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:8px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:11px;background:var(--tx);border-radius:1px"></span><span style="width:3.5px;height:14px;background:var(--tx);border-radius:1px"></span></div><div class="batt"><div class="batt-f"></div></div></div></div>
+<div class="tb"><div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer;color:var(--T);font-size:14px;font-weight:600" onclick="show('s-home')">←</div><span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Notifications</span></div></div>
+<div class="scr">
+  <div style="height:12px"></div>
+  <div class="card" style="border-left:4px solid var(--T)"><div style="font-size:13px;font-weight:700;margin-bottom:4px">🚗 David P. est en route</div><div style="font-size:12px;color:var(--mu)">Arrivée dans ~14 min · M-2026-0418</div><div style="font-size:11px;color:var(--mu);margin-top:5px">14:18</div></div>
+  <div class="card" style="border-left:4px solid var(--T)"><div style="font-size:13px;font-weight:700;margin-bottom:4px">🎯 5 candidats sur votre mission</div><div style="font-size:12px;color:var(--mu)">M-2026-0421 · 3 top match IA</div><div style="font-size:11px;color:var(--mu);margin-top:5px">11:42</div></div>
+  <div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:4px">💶 Paiement confirmé — 85 €</div><div style="font-size:12px;color:var(--mu)">Plomberie urgence ✓</div><div style="font-size:11px;color:var(--mu);margin-top:5px">Hier</div></div>
+  <div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:4px">🎉 +2,50 € cashback</div><div style="font-size:12px;color:var(--mu)">Solde : 12,50 €</div><div style="font-size:11px;color:var(--mu);margin-top:5px">Hier</div></div>
+</div>
+</div>
+
+</div><!-- end phone -->
 <script>
+// ═══════════════════════════════════════════════════════════════
+// FLEXMATCH CLIENT — Connecté au backend Railway
+// ═══════════════════════════════════════════════════════════════
 const API = 'https://flexmatch-api-production.up.railway.app';
 let currentUser = null;
 let allMissions = [];
-let selectedSector = 'BTP';
-let selectedType = 'CLIENT';
+let selectedSector = 'Ménage';
+let isEntr = false;
 
-const SECTORS = [
-  {icon:'🔨',name:'BTP',price:'200-350'},
-  {icon:'📦',name:'Logistique',price:'70-100'},
-  {icon:'🍽️',name:'Restauration',price:'80-120'},
-  {icon:'🎪',name:'Evenementiel',price:'100-150'},
-  {icon:'🧽',name:'Nettoyage',price:'80-120'},
-  {icon:'👶',name:'Baby-sitting',price:'60-90'},
-  {icon:'🚚',name:'Demenagement',price:'120-200'},
-  {icon:'💻',name:'IT Tech',price:'200-400'},
-];
-
-const COLORS = [
-  'linear-gradient(135deg,#ff5722,#f44336)',
-  'linear-gradient(135deg,#00C2C3,#0099a8)',
-  'linear-gradient(135deg,#7c3aed,#6d28d9)',
-  'linear-gradient(135deg,#f59e0b,#d97706)',
-  'linear-gradient(135deg,#10b981,#059669)',
-  'linear-gradient(135deg,#ec4899,#db2777)',
-  'linear-gradient(135deg,#3b82f6,#2563eb)',
-  'linear-gradient(135deg,#06b6d4,#0891b2)',
-];
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+// ── Navigation ──────────────────────────────────────────────────
+function show(id){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function t(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2500);
+}
+const TABS=['s-home','s-missions','s-messages','s-compte'];
+function tab(i){
+  show(TABS[i]);
+  document.querySelectorAll('.bnav .nb').forEach((b,j)=>{b.className='nb';if(i===j)b.classList.add('on')});
+  if(i===1) loadMissions();
+  if(i===0) loadHomeData();
+  if(i===3) loadProfile();
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.add('hidden');
-    s.style.display = 'none';
-  });
-  const el = document.getElementById(id);
-  el.classList.remove('hidden');
-  el.style.display = 'block';
+// ── Inscription & Connexion ──────────────────────────────────────
+function selCT(type){
+  isEntr=type==='entreprise';
+  document.getElementById('ct-p').classList.toggle('on',!isEntr);
+  document.getElementById('ct-e').classList.toggle('on',isEntr);
+  document.getElementById('entr-f').style.display=isEntr?'block':'none';
 }
 
-function navTab(tab) {
-  showScreen(tab);
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('[id^="nav"][id$="-'+tab+'"], [id="nav-'+tab+'"], [id="nav2-'+tab+'"]').forEach(b => b.classList.add('active'));
-  if (tab === 'missions') loadMissions();
-  if (tab === 'home') loadHomeData();
-}
+async function goOTP(){
+  const nameVal = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const pwd = document.getElementById('inp-pwd') ? document.getElementById('inp-pwd').value.trim() : '';
 
-function setType(type) {
-  selectedType = type;
-  document.getElementById('type-client').classList.toggle('active', type === 'CLIENT');
-  document.getElementById('type-pro').classList.toggle('active', type === 'PRO');
-}
+  if(!nameVal || !email){t('⚠️ Remplis tous les champs');return;}
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value;
-  const pwd = document.getElementById('login-pwd').value;
-  const errEl = document.getElementById('login-error');
-  errEl.classList.add('hidden');
-  if (!email || !pwd) { errEl.textContent = 'Remplis tous les champs'; errEl.classList.remove('hidden'); return; }
+  const parts = nameVal.split(' ');
+  const firstName = parts[0] || nameVal;
+  const lastName = parts.slice(1).join(' ') || 'User';
+  const password = pwd || 'FlexMatch2026';
+
   try {
-    const res = await fetch(API + '/auth/login', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email, password: pwd})
+    const res = await fetch(API+'/auth/signup', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({firstName, lastName, email, password, type:'CLIENT', city:'Paris'})
     });
     const data = await res.json();
-    if (data.token) {
+    if(data.token){
+      localStorage.setItem('fm_token', data.token);
+      localStorage.setItem('fm_user', JSON.stringify(data.user));
+      currentUser = data.user;
+      document.getElementById('otp-email').textContent = email;
+      show('s-otp');
+    } else {
+      t('⚠️ '+( data.message || 'Erreur inscription'));
+    }
+  } catch(e){
+    t('⚠️ Erreur de connexion');
+  }
+}
+
+function oN(el,nid){if(el.value&&nid)document.getElementById(nid)?.focus();}
+
+function verOTP(){
+  t('✅ Compte créé !');
+  setTimeout(()=>initApp(), 1000);
+}
+
+async function doLogin(){
+  const email = document.getElementById('login-email')?.value?.trim();
+  const pwd = document.getElementById('login-pwd')?.value?.trim();
+  if(!email || !pwd){t('⚠️ Remplis email et mot de passe');return;}
+  try {
+    const res = await fetch(API+'/auth/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email, password:pwd})
+    });
+    const data = await res.json();
+    if(data.token){
       localStorage.setItem('fm_token', data.token);
       localStorage.setItem('fm_user', JSON.stringify(data.user));
       currentUser = data.user;
       initApp();
-      toast('Connexion reussie !');
+      t('Connexion réussie !');
     } else {
-      errEl.textContent = data.message || 'Email ou mot de passe incorrect';
-      errEl.classList.remove('hidden');
+      t('⚠️ Email ou mot de passe incorrect');
     }
-  } catch(e) {
-    errEl.textContent = 'Erreur de connexion au serveur';
-    errEl.classList.remove('hidden');
+  } catch(e){
+    t('⚠️ Erreur de connexion au serveur');
   }
 }
 
-async function doSignup() {
-  const errEl = document.getElementById('signup-error');
-  errEl.classList.add('hidden');
-  const body = {
-    firstName: document.getElementById('signup-fname').value,
-    lastName: document.getElementById('signup-lname').value,
-    email: document.getElementById('signup-email').value,
-    password: document.getElementById('signup-pwd').value,
-    type: selectedType,
-    city: document.getElementById('signup-city').value,
-  };
-  if (!body.firstName || !body.email || !body.password) {
-    errEl.textContent = 'Remplis tous les champs';
-    errEl.classList.remove('hidden');
+// ── Init App ─────────────────────────────────────────────────────
+function initApp(){
+  if(!currentUser) return;
+  const initials = (currentUser.firstName[0]+(currentUser.lastName||'U')[0]).toUpperCase();
+
+  // Mettre à jour les avatars dans toute l'app
+  document.querySelectorAll('[data-user-initials]').forEach(el=>el.textContent=initials);
+  document.querySelectorAll('[data-user-name]').forEach(el=>el.textContent=currentUser.firstName+' '+(currentUser.lastName||''));
+  document.querySelectorAll('[data-user-email]').forEach(el=>el.textContent=currentUser.email);
+
+  loadHomeData();
+  show('s-home');
+}
+
+// ── Home Data ─────────────────────────────────────────────────────
+async function loadHomeData(){
+  try {
+    const res = await fetch(API+'/missions');
+    allMissions = await res.json();
+    renderHomeMissions();
+  } catch(e){}
+}
+
+function renderHomeMissions(){
+  const el = document.getElementById('home-missions-list');
+  if(!el) return;
+  el.innerHTML = '';
+  const recent = allMissions.slice(0,3);
+  if(recent.length===0){
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mu);font-size:13px">Aucune mission publiée</div>';
     return;
   }
+  recent.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.onclick = () => show('s-detail');
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="font-size:15px;font-weight:700">${m.title}</div>
+        <span class="pill pG">${m.status}</span>
+      </div>
+      <div style="font-size:12px;color:var(--mu);margin-bottom:8px">${m.sector} · ${m.city}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--T)">${m.price} €</span>
+        <span style="font-size:11px;color:var(--mu)">${new Date(m.createdAt).toLocaleDateString('fr-FR')}</span>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+// ── Missions ──────────────────────────────────────────────────────
+async function loadMissions(){
   try {
-    const res = await fetch(API + '/auth/signup', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(body)
+    const res = await fetch(API+'/missions');
+    allMissions = await res.json();
+    renderMissions(allMissions);
+  } catch(e){}
+}
+
+function renderMissions(missions){
+  const el = document.getElementById('missions-container');
+  if(!el) return;
+  el.innerHTML = '';
+  if(missions.length===0){
+    el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--mu)"><div style="font-size:40px;margin-bottom:10px">📋</div><div style="font-size:14px">Aucune mission</div></div>';
+    return;
+  }
+  missions.forEach((m,i) => {
+    const colors = ['#00C2C3','#7c3aed','#f59e0b','#10b981','#ec4899','#3b82f6'];
+    const color = colors[i%colors.length];
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.borderLeft = '4px solid '+color;
+    div.onclick = () => show('s-detail');
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="font-size:15px;font-weight:700">${m.title}</div>
+        <span class="pill pT">${m.sector}</span>
+      </div>
+      <div style="font-size:12px;color:var(--mu);margin-bottom:8px">📍 ${m.city} · ${m.description?.substring(0,50)}...</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:${color}">${m.price} €</span>
+        <span class="pill pG">${m.status}</span>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+// ── Poster une mission ─────────────────────────────────────────────
+function selS(el,n,jobs){
+  document.querySelectorAll('#sg .sb-card').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  selectedSector = n;
+  if(document.getElementById('jcw')){
+    document.getElementById('jcw').innerHTML=jobs.map((j,i)=>`<div class="jc${i===0?' on':''}" onclick="this.classList.toggle('on')">${j}</div>`).join('');
+  }
+}
+function selT(el){document.querySelectorAll('.ts').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
+
+function qt(n){
+  t('"'+n+'" — IA en recherche...');
+  selectedSector = n;
+  setTimeout(()=>show('s-post'),700);
+}
+
+async function postM(){
+  if(!currentUser){t('⚠️ Connecte-toi d\'abord');return;}
+  const titleEl = document.getElementById('post-title');
+  const descEl = document.getElementById('post-desc');
+  const priceEl = document.getElementById('post-price');
+  const cityEl = document.getElementById('post-city');
+
+  const title = titleEl ? titleEl.value.trim() : selectedSector+' — Mission';
+  const description = descEl ? descEl.value.trim() : 'Mission '+selectedSector;
+  const price = priceEl ? Number(priceEl.value) : 100;
+  const city = cityEl ? cityEl.value : 'Paris';
+
+  if(!title){t('⚠️ Ajoute un titre');return;}
+
+  try {
+    const token = localStorage.getItem('fm_token');
+    const res = await fetch(API+'/missions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({title, description:description||title, sector:selectedSector, city, price, clientId:currentUser.id})
     });
     const data = await res.json();
-    if (data.token) {
-      localStorage.setItem('fm_token', data.token);
-      localStorage.setItem('fm_user', JSON.stringify(data.user));
-      currentUser = data.user;
-      initApp();
-      toast('Compte cree !');
+    if(data.id){
+      t('Mission publiée — Code '+data.id.substring(0,8).toUpperCase()+' 🎉');
+      allMissions.unshift(data);
+      setTimeout(()=>show('s-candidates'),1500);
     } else {
-      errEl.textContent = data.message || 'Erreur inscription';
-      errEl.classList.remove('hidden');
+      t('⚠️ '+(data.message||'Erreur'));
     }
-  } catch(e) {
-    errEl.textContent = 'Erreur de connexion';
-    errEl.classList.remove('hidden');
+  } catch(e){
+    t('⚠️ Erreur de connexion');
   }
 }
 
-function doLogout() {
+function openM(i){show('s-detail');}
+function acceptCand(){t('✓ Pro accepté — Notification envoyée');setTimeout(()=>show('s-detail'),1200);}
+
+// ── Profile ────────────────────────────────────────────────────────
+function loadProfile(){
+  if(!currentUser) return;
+  const initials = (currentUser.firstName[0]+(currentUser.lastName||'U')[0]).toUpperCase();
+  const nameEl = document.getElementById('profile-name');
+  const emailEl = document.getElementById('profile-email');
+  const avatarEl = document.getElementById('profile-avatar');
+  const countEl = document.getElementById('profile-missions-count');
+  if(nameEl) nameEl.textContent = currentUser.firstName+' '+(currentUser.lastName||'');
+  if(emailEl) emailEl.textContent = currentUser.email;
+  if(avatarEl) avatarEl.textContent = initials;
+  if(countEl) countEl.textContent = allMissions.length;
+}
+
+function doLogout(){
   localStorage.removeItem('fm_token');
   localStorage.removeItem('fm_user');
   currentUser = null;
-  showScreen('login');
-  toast('Deconnecte !');
+  show('s-signup');
+  t('Déconnecté !');
 }
 
-function initApp() {
-  const initials = (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase();
-  document.getElementById('home-avatar').textContent = initials;
-  document.getElementById('hero-name').textContent = currentUser.firstName.toUpperCase();
-  document.getElementById('home-greeting').textContent = currentUser.firstName;
-  document.getElementById('profile-avatar').textContent = initials;
-  document.getElementById('profile-name').textContent = currentUser.firstName + ' ' + currentUser.lastName;
-  document.getElementById('profile-email').textContent = currentUser.email;
-  document.getElementById('profile-email-detail').textContent = currentUser.email;
-  document.getElementById('profile-type').textContent = currentUser.type;
-  renderSectors();
-  loadHomeData();
-  showScreen('home');
+// ── Rating ─────────────────────────────────────────────────────────
+function rate(el,n){
+  const wrap=el.parentElement;
+  const stars=wrap.querySelectorAll('.star');
+  stars.forEach((s,i)=>s.classList.toggle('on',i<n));
 }
 
-function renderSectors() {
-  const homeEl = document.getElementById('home-sectors');
-  const postEl = document.getElementById('post-sectors');
-  homeEl.innerHTML = '';
-  postEl.innerHTML = '';
-  SECTORS.forEach((s, i) => {
-    const hCard = document.createElement('div');
-    hCard.className = 'sector-card';
-    hCard.innerHTML = '<div class="sector-icon">' + s.icon + '</div><div class="sector-name">' + s.name + '</div>';
-    hCard.onclick = () => { navTab('post'); selectSector(s.name, i); };
-    homeEl.appendChild(hCard);
-
-    const pCard = document.createElement('div');
-    pCard.className = 'sector-card';
-    pCard.id = 'psector-' + s.name;
-    pCard.innerHTML = '<div class="sector-icon">' + s.icon + '</div><div class="sector-name">' + s.name + '</div>';
-    pCard.onclick = () => selectSector(s.name, i);
-    if (s.name === selectedSector) pCard.style.borderColor = '#00C2C3';
-    postEl.appendChild(pCard);
-  });
+// ── Chat ────────────────────────────────────────────────────────────
+function sChat(){
+  const inp=document.getElementById('chat-inp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  const box=document.getElementById('chat-msgs');
+  const d=document.createElement('div');
+  d.className='msg mme';d.textContent=txt;
+  box.appendChild(d);inp.value='';box.scrollTop=9999;
+  setTimeout(()=>{
+    const r=document.createElement('div');
+    r.className='msg mot';r.textContent='👍';
+    box.appendChild(r);box.scrollTop=9999;
+  },800);
 }
 
-function selectSector(name, idx) {
-  selectedSector = name;
-  document.querySelectorAll('[id^="psector-"]').forEach(el => el.style.borderColor = 'transparent');
-  const el = document.getElementById('psector-' + name);
-  if (el) el.style.borderColor = '#00C2C3';
-  const s = SECTORS.find(x => x.name === name);
-  document.getElementById('ai-suggest').innerHTML = 'Pour <strong>' + name + '</strong> a ' + (document.getElementById('post-city').value || 'Paris') + ', tarif moyen <strong>' + s.price + ' euros</strong>. Tu auras 3 candidats en 30 min.';
+// ── Aide ────────────────────────────────────────────────────────────
+const aRep={
+  annulation:'Annulation < 48h après confirmation : pénalité 50%. Allez dans Missions → Détails → Annuler.',
+  litige:'Décrivez la situation. Notre équipe traite sous 24h. Voulez-vous ouvrir un dossier ?',
+  paiement:'Paiements traités sous 48h après validation.',
+  facture:'Vos factures sont dans Compte → Mes factures, téléchargeables en PDF.'
+};
+function aR(key){
+  const box=document.getElementById('aide-msgs');
+  const labels={annulation:'Annuler',litige:'Litige',paiement:'Paiement',facture:'Facture'};
+  const d=document.createElement('div');d.className='msg mme';d.textContent=labels[key];box.appendChild(d);
+  document.getElementById('aide-btns').style.display='none';
+  setTimeout(()=>{
+    const r=document.createElement('div');
+    r.style.cssText='background:var(--TL);color:var(--N);padding:10px 14px;border-radius:18px;border-bottom-left-radius:4px;font-size:13px;max-width:86%;line-height:1.6';
+    r.textContent=aRep[key];box.appendChild(r);box.scrollTop=9999;
+  },600);
+}
+function sAide(){
+  const inp=document.getElementById('aide-inp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  const box=document.getElementById('aide-msgs');
+  const d=document.createElement('div');d.className='msg mme';d.textContent=txt;box.appendChild(d);inp.value='';
+  setTimeout(()=>{
+    const r=document.createElement('div');
+    r.style.cssText='background:var(--TL);color:var(--N);padding:10px 14px;border-radius:18px;border-bottom-left-radius:4px;font-size:13px;max-width:86%;line-height:1.6';
+    r.textContent='Ticket #FM-T-'+Math.floor(Math.random()*9999)+' créé.';
+    box.appendChild(r);box.scrollTop=9999;
+  },700);
 }
 
-async function loadHomeData() {
-  try {
-    const token = localStorage.getItem('fm_token');
-    const res = await fetch(API + '/missions', {
-      headers: {'Authorization': 'Bearer ' + token}
-    });
-    allMissions = await res.json();
-    document.getElementById('home-missions-count').textContent = allMissions.length;
-    document.getElementById('profile-missions').textContent = allMissions.length;
-    const recentEl = document.getElementById('home-recent-missions');
-    recentEl.innerHTML = '';
-    const recent = allMissions.slice(0, 2);
-    if (recent.length === 0) {
-      recentEl.innerHTML = '<div class="card" style="text-align:center;padding:24px;color:#94a3b8"><div style="font-size:32px;margin-bottom:8px">📋</div><div style="font-size:13px">Aucune mission</div></div>';
-    } else {
-      recent.forEach((m, i) => renderMissionCard(m, i, recentEl));
-    }
-  } catch(e) {}
-}
-
-async function loadMissions() {
-  try {
-    const token = localStorage.getItem('fm_token');
-    const res = await fetch(API + '/missions', {
-      headers: {'Authorization': 'Bearer ' + token}
-    });
-    allMissions = await res.json();
-    renderMissionsList(allMissions);
-  } catch(e) {}
-}
-
-function renderMissionsList(missions) {
-  const el = document.getElementById('missions-list');
-  el.innerHTML = '';
-  if (missions.length === 0) {
-    el.innerHTML = '<div class="card" style="text-align:center;padding:30px;color:#94a3b8"><div style="font-size:40px;margin-bottom:10px">📋</div><div>Aucune mission</div><button class="btn btn-primary" style="margin-top:12px;width:auto;padding:10px 20px" onclick="navTab(' + "'post'" + ')">Poster une mission</button></div>';
-    return;
+// ── Calendrier ──────────────────────────────────────────────────────
+(function(){
+  const g=document.getElementById('calg');
+  if(!g)return;
+  for(let i=0;i<3;i++){const d=document.createElement('div');d.className='cd empty';g.appendChild(d);}
+  for(let d=1;d<=30;d++){
+    const el=document.createElement('div');el.className='cd';el.textContent=d;
+    if(d<24)el.classList.add('past');
+    else if(d===24){el.classList.add('today');el.onclick=()=>{document.querySelectorAll('.cd').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');t('📅 '+d+' avril');}}
+    else{el.classList.add('avail');el.onclick=()=>{document.querySelectorAll('.cd').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');t('📅 '+d+' avril');}}
+    g.appendChild(el);
   }
-  missions.forEach((m, i) => renderMissionCard(m, i, el));
-}
+})();
 
-function renderMissionCard(m, i, container) {
-  const div = document.createElement('div');
-  div.className = 'mission-card';
-  div.innerHTML = '<div class="mission-header" style="background:' + COLORS[i % COLORS.length] + '">' +
-    '<div style="font-size:10px;opacity:.85;margin-bottom:2px">' + m.sector + ' · ' + m.city + '</div>' +
-    '<div style="font-size:16px;font-weight:900">' + m.title + '</div>' +
-    '</div>' +
-    '<div class="mission-body">' +
-    '<div style="font-size:12px;color:#64748b;margin-bottom:10px">' + (m.description || '').substring(0, 80) + '...</div>' +
-    '<div style="display:flex;justify-content:space-between;align-items:center">' +
-    '<span style="font-size:20px;font-weight:900;color:#00C2C3">' + m.price + ' €</span>' +
-    '<span class="badge badge-open">' + m.status + '</span>' +
-    '</div>' +
-    '</div>';
-  container.appendChild(div);
-}
-
-function filterMissions(status) {
-  if (status === 'all') renderMissionsList(allMissions);
-  else renderMissionsList(allMissions.filter(m => m.status === status));
-}
-
-async function postMission() {
-  const errEl = document.getElementById('post-error');
-  errEl.classList.add('hidden');
-  const title = document.getElementById('post-title').value;
-  const desc = document.getElementById('post-desc').value;
-  const city = document.getElementById('post-city').value;
-  const price = document.getElementById('post-price').value;
-  if (!title || !desc) {
-    errEl.textContent = 'Remplis le titre et la description';
-    errEl.classList.remove('hidden');
-    return;
-  }
-  try {
-    const token = localStorage.getItem('fm_token');
-    const res = await fetch(API + '/missions', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Authorization':'Bearer ' + token},
-      body: JSON.stringify({title, description: desc, sector: selectedSector, city, price: Number(price), clientId: currentUser.id})
-    });
-    const data = await res.json();
-    if (data.id) {
-      toast('Mission publiee !');
-      document.getElementById('post-title').value = '';
-      document.getElementById('post-desc').value = '';
-      setTimeout(() => navTab('missions'), 1000);
-    } else {
-      errEl.textContent = 'Erreur creation mission';
-      errEl.classList.remove('hidden');
-    }
-  } catch(e) {
-    errEl.textContent = 'Erreur de connexion';
-    errEl.classList.remove('hidden');
-  }
-}
-
-// INIT
+// ── Initialisation ──────────────────────────────────────────────────
 window.onload = () => {
   const token = localStorage.getItem('fm_token');
   const user = localStorage.getItem('fm_user');
-  if (token && user) {
+  if(token && user){
     currentUser = JSON.parse(user);
     initApp();
-  } else {
-    showScreen('login');
   }
+  // Sinon reste sur s-signup (déjà affiché par défaut)
 };
 </script>
 </body>
